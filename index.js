@@ -1,29 +1,30 @@
-// const yahooFinance = require('yahoo-finance')
-// const colors = require('colors')
-
 import yahooFinance from 'yahoo-finance'
-import colors from 'colors'
+import chalk from 'chalk'
 import ora from 'ora'
 
 // Display a welcome message
-console.log(`Welcome to Yahoo Finance in the Command Line!`.red)
-console.log(`---------------------------------------------`.blue)
+console.log(chalk.redBright('Welcome to Yahoo Finance in the Command Line!'))
+console.log(`---------------------------------------------`)
 console.log(
-  `The basic idea here is to use YahooFinance's historical data to check the closing price of US shares.`
-    .green
+  chalk.greenBright(
+    `The concept here is to use YahooFinance's historical data to check the closing price of US shares.`
+  )
 )
 console.log(
-  `This is important to know because the closing price affects income tax for NZ investors.\n`
-    .green
+  chalk.greenBright(
+    `This is important to know because the closing price affects income tax for NZ investors.\n`
+  )
 )
 
-// Example multiple historical from GitHub
+// Based on example historical data for multiple stocks from yahoo-finance documentation
 // Get the data for the end of the NZ financial year
 
 const SYMBOLS = ['AAPL', 'AMZN', 'GOOGL', 'TSLA']
 let data = {}
 
-const spinner = ora(`Loading ${'stonks'.red} data from YahooFinance`).start() // Start the Ora spinner
+const spinner = ora(`Loading ${chalk.green('stonks')} data from YahooFinance`)
+spinner.color = 'green'
+spinner.start() // Start the Ora spinner
 getStockData(SYMBOLS)
 
 function getStockData(symbols) {
@@ -36,12 +37,14 @@ function getStockData(symbols) {
     })
     .then(
       function (result) {
-        spinner.succeed(`Loaded ${'stonks'.red} data from YahooFinance\n`) // Stop the Ora spinner
+        spinner.succeed(
+          `Loaded ${chalk.green('stonks')} data from YahooFinance\n`
+        ) // Stop the Ora spinner
         data = result
         console.log(
           `The closing price for ${data['TSLA'][0].symbol} was $${data['TSLA'][0].close}`
         )
-        console.log(`\nHere's all of the data we got:`.blue)
+        console.log(`\nHere's all of the data we got:`)
         console.log(data)
       },
       function (err) {
