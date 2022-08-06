@@ -2,22 +2,8 @@ import yahooFinance from 'yahoo-finance'
 import chalk from 'chalk'
 import ora from 'ora'
 
-// Display a welcome message
 console.log(chalk.redBright('Welcome to Yahoo Finance in the Command Line!'))
-console.log(`---------------------------------------------`)
-console.log(
-  chalk.greenBright(
-    `The concept here is to use YahooFinance's historical data to check the closing price of US shares.`
-  )
-)
-console.log(
-  chalk.greenBright(
-    `This is important to know because the closing price affects income tax for NZ investors.\n`
-  )
-)
-
-// Based on example historical data for multiple stocks from yahoo-finance documentation
-// Get the data for the end of the NZ financial year
+console.log(chalk.cyanBright(`---------------------------------------------`))
 
 const SYMBOLS = ['AAPL', 'AMZN', 'GOOGL', 'TSLA']
 let data = {}
@@ -28,27 +14,55 @@ spinner.start() // Start the Ora spinner
 getStockData(SYMBOLS)
 
 function getStockData(symbols) {
+  // Add 'NZDUSD=X' to the the symbols array so we can get the currency conversion rate
+  symbols.push('NZDUSD=X')
+
+  // Use the yahooFinance module to get the data for the end of the NZ financial year
   yahooFinance
     .historical({
       symbols: symbols,
+      // Yahoo Finance Historical data filter is off by one day so we need to add 1 day to the date
       from: '2022-03-31',
       to: '2022-04-01',
       period: 'd',
     })
     .then(
       function (result) {
+        // Stop the Ora spinner
         spinner.succeed(
-          `Loaded ${chalk.green('stonks')} data from YahooFinance\n`
-        ) // Stop the Ora spinner
-        data = result
-        console.log(
-          `The closing price for ${data['TSLA'][0].symbol} was $${data['TSLA'][0].close}`
+          `Loaded ${chalk.green('stonks')} data from YahooFinance`
         )
-        console.log(`\nHere's all of the data we got:`)
-        console.log(data)
+        // Save the data
+        data = result
+        // Read the data
+        readStockData(data)
       },
       function (err) {
         console.log(`Whoops, something went wrong!\n${err}`.red)
       }
     )
+}
+
+function readStockData(data) {
+  console.log(chalk.cyanBright(`---------------------------------------------`))
+  // console.log(`\nHere's all of the data we got:`)
+  // console.log(data)
+
+  // Use Object.keys to get an array of the keys in the data object
+  const keys = Object.keys(data)
+
+  // Pull out the last entry in the array of keys
+  // This is the currency conversion rate
+  const currency = keys.pop()
+
+  // Take the inverse of the currency rate to get the USD to NZD rate
+  const usdToNzd = 1 / data[currency][0].close
+
+  keys.forEach(function (key) {
+    console.log(
+      `The closing price for ${chalk.red(data[key][0].symbol)} was ${chalk.blue(
+        `$${data[key][0].close}`
+      )} USD. This was ${chalk.green(`$${usdToNzd * data[key][0].close}`)} NZD.`
+    )
+  })
 }
