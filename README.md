@@ -6,7 +6,7 @@ The concept here is to use YahooFinance's historical data to check the closing p
 The function getStockData an array of symbols and returns Yahoo Finance historical data for 30 March - closing value for the NZ tax year. It also fetches the currency rate for USD/NZD and displays the closing price in NZD.
 
 # Example
-```
+```JavaScript
 const SYMBOLS = ['AAPL', 'AMZN', 'GOOGL', 'TSLA']
 
 getStockData(SYMBOLS)
