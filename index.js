@@ -45,8 +45,6 @@ function getStockData(symbols) {
 
 function readStockData(data) {
   console.log(chalk.cyanBright(`---------------------------------------------`))
-  // console.log(`\nHere's all of the data we got:`)
-  // console.log(data)
 
   // Use Object.keys to get an array of the keys in the data object
   const keys = Object.keys(data)
@@ -58,11 +56,14 @@ function readStockData(data) {
   // Take the inverse of the currency rate to get the USD to NZD rate
   const usdToNzd = 1 / data[currency][0].close
 
+  const stocks = {}
+
   keys.forEach(function (key) {
-    console.log(
-      `The closing price for ${chalk.red(data[key][0].symbol)} was ${chalk.blue(
-        `$${data[key][0].close}`
-      )} USD. This was ${chalk.green(`$${usdToNzd * data[key][0].close}`)} NZD.`
-    )
+    stocks[key] = {
+      'USD Value': data[key][0].close,
+      'NZD Value': usdToNzd * data[key][0].close,
+    }
   })
+
+  console.table(stocks)
 }
