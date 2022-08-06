@@ -1,5 +1,5 @@
 # finance-npm
-Using the yahoo-finance NPM
+Using the yahoo-finance NPM: https://www.npmjs.com/package/yahoo-finance
 
 The concept here is to use YahooFinance's historical data to check the closing price of US shares. This is important to know because the closing price affects income tax for NZ investors.
 
