@@ -8,7 +8,7 @@ router.get('/', function (req, res) {
 })
 
 router.post('/', function (req, res) {
-  utils.search('./data.json', req, res, 'results')
+  utils.search(req, res, 'results')
   // res.send(req.body)
 })
 

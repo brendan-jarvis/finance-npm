@@ -32,7 +32,7 @@ function readDetails(fileName, req, res, template) {
   })
 }
 
-function search(fileName, req, res, template) {
+function search(req, res, template) {
   // Split the search at ' ' and ',' to get an array of symbols
   const symbols = req.body.search.split(/[ ,]+/)
 
