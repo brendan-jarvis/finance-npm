@@ -1,0 +1,16 @@
+<table class="u-full-width" id="stock-list">
+  <thead>
+    <tr>
+      <th>Symbol</th>
+      <th>Close</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each stocks}}
+    <tr>
+    <td>{{symbol}}</td>
+    <td>${{close}}</td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>

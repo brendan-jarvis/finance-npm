@@ -3,19 +3,21 @@ const router = express.Router()
 const utils = require('./utils')
 
 router.get('/', function (req, res) {
-  utils.readFile('./data.json', req, res, 'home')
+  // utils.readFile('./data.json', req, res, 'home')
+  res.render('home')
 })
 
-// router.get('/stocks/:id/', function (req, res) {
-//   utils.readDetails('./data.json', req, res, 'edit')
-// })
-
-// router.post('/stocks/:id/edit', function (req, res) {
-// utils.writeDetailsToFile('./data.json', req, res)
-// })
+router.post('/', function (req, res) {
+  utils.search('./data.json', req, res, 'results')
+  // res.send(req.body)
+})
 
 router.get('/stocks/:symbol', function (req, res) {
   utils.readDetails('./data.json', req, res, 'details')
+})
+
+router.get('/example', function (req, res) {
+  utils.readFile('./data.json', req, res, 'example')
 })
 
 //export this router to use in our index.js

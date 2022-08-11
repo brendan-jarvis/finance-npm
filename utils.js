@@ -1,13 +1,5 @@
-// import yahooFinance from 'yahoo-finance'
-// import chalk from 'chalk'
-// import ora from 'ora'
 const yahooFinance = require('yahoo-finance')
 const fs = require('fs')
-
-// const SYMBOLS = ['AAPL', 'AMZN', 'GOOGL', 'TSLA']
-let data = {}
-
-// getStockData(SYMBOLS)
 
 function readFile(fileName, req, res, template) {
   fs.readFile(fileName, (err, data) => {
@@ -35,19 +27,22 @@ function readDetails(fileName, req, res, template) {
       (stock) => stock.symbol == req.params.symbol
     )
 
-    // // Render the stock details to the browser
+    // Render the stock details to the browser
     res.render(template, stock)
   })
 }
 
-function getStockData(symbols) {
+function search(fileName, req, res, template) {
+  // Split the search at ' ' and ',' to get an array of symbols
+  const symbols = req.body.search.split(/[ ,]+/)
+
+  // If currency option is checked
   // Add 'NZDUSD=X' to the the symbols array so we can get the currency conversion rate
-  symbols.push('NZDUSD=X')
+  if (req.body.addCurrency) {
+    symbols.push('NZDUSD=X')
+  }
 
-  console.log(`---------------------------------------------`)
-  console.log(`Getting stock data for ${symbols.join(', ')}`)
-
-  // Use the yahooFinance module to get the data for the end of the NZ financial year
+  // Get the stock data for the symbols
   yahooFinance
     .historical({
       symbols: symbols,
@@ -58,45 +53,49 @@ function getStockData(symbols) {
     })
     .then(
       function (result) {
-        console.log(`Loaded stonks data from YahooFinance`)
-        // Save the data
-        data = result
-        // Read the data
-        readStockData(data)
+        // res.send(result)
+        const convertedResult = convertHistoricalData(result)
+        res.render(template, convertedResult)
+        // res.send(convertedResult)
       },
       function (err) {
-        console.log(`Whoops, something went wrong!\n${err}`)
+        return `Whoops, something went wrong!\n${err}`
       }
     )
 }
 
-function readStockData(data) {
-  console.log(`---------------------------------------------`)
-
-  // Use Object.keys to get an array of the keys in the data object
+function convertHistoricalData(data) {
   const keys = Object.keys(data)
 
-  // Pull out the last entry in the array of keys
-  // This is the currency conversion rate
-  const currency = keys.pop()
+  const reformattedData = {
+    stocks: [],
+  }
 
-  // Take the inverse of the currency rate to get the USD to NZD rate
-  const usdToNzd = 1 / data[currency][0].close
+  keys.forEach((key) => {
+    // create an empty object to store the stock data
+    const stock = {}
 
-  const stocks = {}
+    // add the stock data to the object
+    stock.symbol = data[key][0].symbol
+    stock.name = data[key][0].name
+    stock.date = data[key][0].date
+    stock.open = data[key][0].open
+    stock.high = data[key][0].high
+    stock.low = data[key][0].low
+    stock.close = data[key][0].close
+    stock.adjClose = data[key][0].adjClose
+    stock.volume = data[key][0].volume
 
-  keys.forEach(function (key) {
-    stocks[key] = {
-      'USD Value': data[key][0].close,
-      'NZD Value': usdToNzd * data[key][0].close,
-    }
+    // add the stock object to the stocks array
+    reformattedData['stocks'].push(stock)
   })
 
-  console.table(stocks)
+  return reformattedData
 }
 
 module.exports = {
   readFile,
   readDetails,
-  getStockData,
+  search,
+  convertHistoricalData,
 }

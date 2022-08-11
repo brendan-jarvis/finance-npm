@@ -1,28 +1,11 @@
-<form>
+<form class="form" action="/" method="post">
   <div class="row">
     <label class="u-full-width" for="addStocks">Get stock data from Yahoo Finance</label>
-    <input type="text" class="u-full-width" placeholder="AAPL AMZN GOOGL TSLA ..." id="addStocks"></input>
+    <input type="text" class="u-full-width" placeholder="AAPL AMZN GOOGL TSLA ..." name="search" id="addStocks"></input>
+    <label class="add-currency">
+      <input type="checkbox" name="addCurrency">
+      <span class="label-body">Add NZD/USD?</span>
+    </label>
     <input class="button-primary" type="submit" value="Submit">
   </div>
 </form>
-
-<table class="u-full-width" id="stock-list">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Symbol</th>
-      <th>Close</th>
-      <th>Details</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each stocks}}
-    <tr>
-    <td>{{name}}</td>
-    <td>{{symbol}}</td>
-    <td>${{close}}</td>
-    <td><a href="/stocks/{{symbol}}">{{name}} details</a></td>
-    </tr>
-    {{/each}}
-  </tbody>
-</table>
