@@ -68,6 +68,7 @@ function searchHistorical(req, res, template) {
     .historical({
       symbols: historicalSearchSymbols,
       // Yahoo Finance Historical data filter is off by one day so we need to add 1 day to the date
+      // Yahoo Finance historical data is not however off by one day for NZDUSD=X
       from: '2022-03-31',
       to: '2022-04-01',
       period: 'd',
@@ -85,8 +86,6 @@ function searchHistorical(req, res, template) {
 
 function convertCurrentData(data) {
   const keys = Object.keys(data)
-
-  console.log(data)
 
   const reformattedData = {
     stocks: [],
