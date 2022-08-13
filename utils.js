@@ -192,6 +192,9 @@ function convertHistoricalData(data) {
     stock.adjClose = data[key][0].adjClose
     stock.volume = data[key][0].volume
 
+    const date = new Date(stock.date)
+    stock.date = new Intl.DateTimeFormat('en-GB').format(date)
+
     // add the stock object to the stocks array
     reformattedData['stocks'].push(stock)
   })
