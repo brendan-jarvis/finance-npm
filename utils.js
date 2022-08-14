@@ -67,16 +67,18 @@ function searchHistorical(req, res, template) {
   yahooFinance
     .historical({
       symbols: historicalSearchSymbols,
-      // Yahoo Finance Historical data filter is off by one day so we need to add 1 day to the date
-      // Yahoo Finance historical data is not however off by one day for NZDUSD=X
-      from: '2022-03-31',
+      from: '2022-03-30',
       to: '2022-04-01',
       period: 'd',
     })
     .then(
       function (result) {
-        const convertedResult = convertHistoricalData(result)
-        res.render(template, convertedResult)
+        const convertedResult = convertHistoricalData(
+          result,
+          req,
+          res,
+          template
+        )
       },
       function (err) {
         return `Whoops, something went wrong!\n${err}`
@@ -137,6 +139,7 @@ function convertCurrentData(data) {
       stock.shortName = data[key].price.shortName
       stock.symbol = data[key].price.symbol
       stock.exchangeName = data[key].price.exchangeName
+      stock.currency = data[key].price.currency
       stock.currencySymbol = data[key].price.currencySymbol
 
       // Add the financial data to the stock object
@@ -170,34 +173,80 @@ function convertCurrentData(data) {
   return reformattedData
 }
 
-function convertHistoricalData(data) {
+function convertHistoricalData(data, req, res, template) {
   const keys = Object.keys(data)
 
   const reformattedData = {
     stocks: [],
   }
 
-  keys.forEach((key) => {
-    // create an empty object to store the stock data
-    const stock = {}
+  // Get the currency
+  yahooFinance
+    .quote({
+      symbols: keys,
+      modules: ['price'],
+    })
+    .then(
+      function (result) {
+        // Iterate through the stocks we are getting historical data for
+        keys.forEach((key) => {
+          // Result is an array of objects containing the stock data for multiple days
+          // Filter to the correct day in the result and add to the reformattedData object
+          data[key].forEach((day) => {
+            if (day.date.toLocaleString('en-NZ') == '30/03/2022, 5:00:00 pm') {
+              // Create an empty object to store the stock data
+              const stock = {}
 
-    // add the stock data to the object
-    stock.symbol = data[key][0].symbol
-    stock.name = data[key][0].name
-    stock.date = data[key][0].date
-    stock.open = data[key][0].open
-    stock.high = data[key][0].high
-    stock.low = data[key][0].low
-    stock.close = data[key][0].close
-    stock.adjClose = data[key][0].adjClose
-    stock.volume = data[key][0].volume
+              // Add the stock data to the object
+              stock.symbol = day.symbol
+              stock.date = day.date
+              stock.open = day.open.toLocaleString('en-NZ', {
+                style: 'currency',
+                currency: result[key].price.currency,
+              })
+              stock.high = day.high.toLocaleString('en-NZ', {
+                style: 'currency',
+                currency: result[key].price.currency,
+              })
+              stock.low = day.low.toLocaleString('en-NZ', {
+                style: 'currency',
+                currency: result[key].price.currency,
+              })
 
-    const date = new Date(stock.date)
-    stock.date = new Intl.DateTimeFormat('en-GB').format(date)
+              stock.close = day.close.toLocaleString('en-NZ', {
+                style: 'currency',
+                currency: result[key].price.currency,
+              })
+              // Preserve the full closing price for NZDUSD to allow currency conversions
+              if (stock.symbol == 'NZDUSD=X') {
+                stock.close = day.close.toLocaleString('en-NZ', {
+                  style: 'currency',
+                  currency: result[key].price.currency,
+                  minimumFractionDigits: 6,
+                })
+              }
+              stock.adjClose = day.adjClose.toLocaleString('en-NZ', {
+                style: 'currency',
+                currency: result[key].price.currency,
+              })
+              stock.volume = day.volume.toLocaleString('en-NZ')
 
-    // add the stock object to the stocks array
-    reformattedData['stocks'].push(stock)
-  })
+              // Format the date to be in the format DD/MM/YYYY
+              const date = new Date(stock.date)
+              stock.date = new Intl.DateTimeFormat('en-NZ').format(date)
+
+              // Push the stock data to the array
+              reformattedData['stocks'].push(stock)
+            }
+          })
+        })
+
+        res.render(template, reformattedData)
+      },
+      function (err) {
+        return `Whoops, something went wrong!\n${err}`
+      }
+    )
 
   return reformattedData
 }
