@@ -97,42 +97,98 @@ function convertCurrentData(data) {
     // create an empty object to store the stock data
     const stock = {}
 
-    console.log(data[key].summaryDetail)
-
     // If data[key].summaryDetail.totalAssets is defined then it's an ETF
     if (data[key].summaryDetail.totalAssets) {
       // Add the summary detail data to the object
-      stock.previousClose = data[key].summaryDetail.previousClose
-      stock.open = data[key].summaryDetail.open
-      stock.high = data[key].summaryDetail.high
-      stock.dayLow = data[key].summaryDetail.dayLow
-      stock.dayHigh = data[key].summaryDetail.dayHigh
+      stock.previousClose = data[
+        key
+      ].summaryDetail.previousClose.toLocaleString('en-NZ', {
+        style: 'currency',
+        currency: data[key].price.currency,
+      })
+      stock.open = data[key].summaryDetail.open.toLocaleString('en-NZ', {
+        style: 'currency',
+        currency: data[key].price.currency,
+      })
+      stock.dayLow = data[key].summaryDetail.dayLow.toLocaleString('en-NZ', {
+        style: 'currency',
+        currency: data[key].price.currency,
+      })
+      stock.dayHigh = data[key].summaryDetail.dayHigh.toLocaleString('en-NZ', {
+        style: 'currency',
+        currency: data[key].price.currency,
+      })
 
-      stock.fiftyTwoWeekLow = data[key].summaryDetail.fiftyTwoWeekLow
-      stock.fiftyTwoWeekHigh = data[key].summaryDetail.fiftyTwoWeekHigh
-      stock.volume = data[key].summaryDetail.volume
-      stock.totalAssets = data[key].summaryDetail.totalAssets
+      stock.fiftyTwoWeekLow = data[
+        key
+      ].summaryDetail.fiftyTwoWeekLow.toLocaleString('en-NZ', {
+        style: 'currency',
+        currency: data[key].price.currency,
+      })
+      stock.fiftyTwoWeekHigh = data[
+        key
+      ].summaryDetail.fiftyTwoWeekHigh.toLocaleString('en-NZ', {
+        style: 'currency',
+        currency: data[key].price.currency,
+      })
+      stock.volume = data[key].summaryDetail.volume.toLocaleString('en-NZ')
+      stock.totalAssets = data[key].summaryDetail.totalAssets.toLocaleString(
+        'en-NZ',
+        {
+          style: 'currency',
+          currency: data[key].price.currency,
+        }
+      )
 
       // Add the price data to the stock object
       stock.shortName = data[key].price.shortName
       stock.symbol = data[key].price.symbol
-      stock.regularMarketPrice = data[key].price.regularMarketPrice
+      stock.regularMarketPrice = data[
+        key
+      ].price.regularMarketPrice.toLocaleString('en-NZ', {
+        style: 'currency',
+        currency: data[key].price.currency,
+      })
       stock.exchangeName = data[key].price.exchangeName
       stock.currencySymbol = data[key].price.currencySymbol
     }
     // If data[key].summaryDetail.totalAssets is not defined then it's a stock
     else {
       // Add the summary detail data to the object
-      stock.previousClose = data[key].summaryDetail.previousClose
-      stock.open = data[key].summaryDetail.open
-      stock.high = data[key].summaryDetail.high
-      stock.dayLow = data[key].summaryDetail.dayLow
-      stock.dayHigh = data[key].summaryDetail.dayHigh
+      stock.previousClose = data[
+        key
+      ].summaryDetail.previousClose.toLocaleString('en-NZ', {
+        style: 'currency',
+        currency: data[key].price.currency,
+      })
+      stock.open = data[key].summaryDetail.open.toLocaleString('en-NZ', {
+        style: 'currency',
+        currency: data[key].price.currency,
+      })
+      stock.dayLow = data[key].summaryDetail.dayLow.toLocaleString('en-NZ', {
+        style: 'currency',
+        currency: data[key].price.currency,
+      })
+      stock.dayHigh = data[key].summaryDetail.dayHigh.toLocaleString('en-NZ', {
+        style: 'currency',
+        currency: data[key].price.currency,
+      })
 
-      stock.fiftyTwoWeekLow = data[key].summaryDetail.fiftyTwoWeekLow
-      stock.fiftyTwoWeekHigh = data[key].summaryDetail.fiftyTwoWeekHigh
-      stock.volume = data[key].summaryDetail.volume
-      stock.marketCap = data[key].summaryDetail.marketCap
+      stock.fiftyTwoWeekLow = data[
+        key
+      ].summaryDetail.fiftyTwoWeekLow.toLocaleString('en-NZ', {
+        style: 'currency',
+        currency: data[key].price.currency,
+      })
+      stock.fiftyTwoWeekHigh = data[
+        key
+      ].summaryDetail.fiftyTwoWeekHigh.toLocaleString('en-NZ', {
+        style: 'currency',
+        currency: data[key].price.currency,
+      })
+      stock.volume = data[key].summaryDetail.volume.toLocaleString('en-NZ')
+      stock.marketCap =
+        data[key].summaryDetail.marketCap.toLocaleString('en-NZ')
 
       stock.trailingPE = data[key].summaryDetail.trailingPE
       stock.forwardPE = data[key].summaryDetail.forwardPE
@@ -141,35 +197,135 @@ function convertCurrentData(data) {
       // Add the price data to the stock object
       stock.shortName = data[key].price.shortName
       stock.symbol = data[key].price.symbol
-      stock.regularMarketPrice = data[key].price.regularMarketPrice
+      stock.regularMarketPrice = data[
+        key
+      ].price.regularMarketPrice.toLocaleString('en-NZ', {
+        style: 'currency',
+        currency: data[key].price.currency,
+      })
       stock.exchangeName = data[key].price.exchangeName
       stock.currency = data[key].price.currency
       stock.currencySymbol = data[key].price.currencySymbol
 
       // Add the financial data to the stock object
 
-      stock.targetLowPrice = data[key].financialData.targetLowPrice
-      stock.targetMeanPrice = data[key].financialData.targetMeanPrice
-      stock.targetHighPrice = data[key].financialData.targetHighPrice
-      stock.targetMedianPrice = data[key].financialData.targetMedianPrice
-      stock.recommendationKey = data[key].financialData.recommendationKey
+      stock.targetLowPrice = data[
+        key
+      ].financialData.targetLowPrice.toLocaleString('en-NZ', {
+        style: 'currency',
+        currency: data[key].price.currency,
+      })
+      stock.targetMeanPrice = data[
+        key
+      ].financialData.targetMeanPrice.toLocaleString('en-NZ', {
+        style: 'currency',
+        currency: data[key].price.currency,
+      })
+      stock.targetHighPrice = data[
+        key
+      ].financialData.targetHighPrice.toLocaleString('en-NZ', {
+        style: 'currency',
+        currency: data[key].price.currency,
+      })
+      stock.targetMedianPrice = data[
+        key
+      ].financialData.targetMedianPrice.toLocaleString('en-NZ', {
+        style: 'currency',
+        currency: data[key].price.currency,
+      })
+      stock.recommendationKey =
+        data[key].financialData.recommendationKey.toUpperCase()
       stock.numberOfAnalystOpinions =
         data[key].financialData.numberOfAnalystOpinions
 
-      stock.totalCash = data[key].financialData.totalCash
-      stock.totalCashPerShare = data[key].financialData.totalCashPerShare
-      stock.totalDebt = data[key].financialData.totalDebt
-      stock.ebitda = data[key].financialData.ebitda
-      stock.totalRevenue = data[key].financialData.totalRevenue
-      stock.grossProfits = data[key].financialData.grossProfits
-      stock.freeCashflow = data[key].financialData.freeCashflow
-      stock.operatingCashflow = data[key].financialData.operatingCashflow
-      stock.earningsGrowth = data[key].financialData.earningsGrowth * 100
-      stock.revenueGrowth = data[key].financialData.revenueGrowth * 100
-      stock.grossMargins = data[key].financialData.grossMargins * 100
-      stock.ebitdaMargins = data[key].financialData.ebitdaMargins * 100
-      stock.operatingMargins = data[key].financialData.operatingMargins * 100
-      stock.profitMargins = data[key].financialData.profitMargins * 100
+      stock.totalCash = data[key].financialData.totalCash.toLocaleString(
+        'en-NZ',
+        {
+          style: 'currency',
+          currency: data[key].price.currency,
+        }
+      )
+      stock.totalCashPerShare = data[
+        key
+      ].financialData.totalCashPerShare.toLocaleString('en-NZ', {
+        style: 'currency',
+        currency: data[key].price.currency,
+      })
+      stock.totalDebt = data[key].financialData.totalDebt.toLocaleString(
+        'en-NZ',
+        {
+          style: 'currency',
+          currency: data[key].price.currency,
+        }
+      )
+      stock.ebitda = data[key].financialData.ebitda.toLocaleString('en-NZ', {
+        style: 'currency',
+        currency: data[key].price.currency,
+      })
+      stock.totalRevenue = data[key].financialData.totalRevenue.toLocaleString(
+        'en-NZ',
+        {
+          style: 'currency',
+          currency: data[key].price.currency,
+        }
+      )
+      stock.grossProfits = data[key].financialData.grossProfits.toLocaleString(
+        'en-NZ',
+        {
+          style: 'currency',
+          currency: data[key].price.currency,
+        }
+      )
+      stock.freeCashflow = data[key].financialData.freeCashflow.toLocaleString(
+        'en-NZ',
+        {
+          style: 'currency',
+          currency: data[key].price.currency,
+        }
+      )
+      stock.operatingCashflow = data[
+        key
+      ].financialData.operatingCashflow.toLocaleString('en-NZ', {
+        style: 'currency',
+        currency: data[key].price.currency,
+      })
+      stock.earningsGrowth = data[
+        key
+      ].financialData.earningsGrowth.toLocaleString('en-NZ', {
+        style: 'percent',
+        minimumFractionDigits: 2,
+      })
+      stock.revenueGrowth = data[
+        key
+      ].financialData.revenueGrowth.toLocaleString('en-NZ', {
+        style: 'percent',
+        minimumFractionDigits: 2,
+      })
+      stock.grossMargins = data[key].financialData.grossMargins.toLocaleString(
+        'en-NZ',
+        {
+          style: 'percent',
+          minimumFractionDigits: 2,
+        }
+      )
+      stock.ebitdaMargins = data[
+        key
+      ].financialData.ebitdaMargins.toLocaleString('en-NZ', {
+        style: 'percent',
+        minimumFractionDigits: 2,
+      })
+      stock.operatingMargins = data[
+        key
+      ].financialData.operatingMargins.toLocaleString('en-NZ', {
+        style: 'percent',
+        minimumFractionDigits: 2,
+      })
+      stock.profitMargins = data[
+        key
+      ].financialData.profitMargins.toLocaleString('en-NZ', {
+        style: 'percent',
+        minimumFractionDigits: 2,
+      })
     }
     reformattedData['stocks'].push(stock)
   })
