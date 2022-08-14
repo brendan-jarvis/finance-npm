@@ -97,6 +97,8 @@ function convertCurrentData(data) {
     // create an empty object to store the stock data
     const stock = {}
 
+    console.log(data[key].summaryDetail)
+
     // If data[key].summaryDetail.totalAssets is defined then it's an ETF
     if (data[key].summaryDetail.totalAssets) {
       // Add the summary detail data to the object
@@ -114,6 +116,7 @@ function convertCurrentData(data) {
       // Add the price data to the stock object
       stock.shortName = data[key].price.shortName
       stock.symbol = data[key].price.symbol
+      stock.regularMarketPrice = data[key].price.regularMarketPrice
       stock.exchangeName = data[key].price.exchangeName
       stock.currencySymbol = data[key].price.currencySymbol
     }
@@ -138,6 +141,7 @@ function convertCurrentData(data) {
       // Add the price data to the stock object
       stock.shortName = data[key].price.shortName
       stock.symbol = data[key].price.symbol
+      stock.regularMarketPrice = data[key].price.regularMarketPrice
       stock.exchangeName = data[key].price.exchangeName
       stock.currency = data[key].price.currency
       stock.currencySymbol = data[key].price.currencySymbol
