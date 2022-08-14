@@ -1,0 +1,16 @@
+/* Change background color */
+body {
+  background-color: #f5f5f5;
+}
+
+/* Style nav a */
+nav a {
+  color: #5D5D5D;
+  text-decoration: none;
+  padding: 0px;
+}
+
+/* Change link styling to a dark grey */
+a {
+  color: #333;
+}

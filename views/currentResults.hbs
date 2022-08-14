@@ -1,0 +1,150 @@
+{{#each stocks}}
+<h2>{{shortName}} - {{symbol}} {{exchangeName}}</h2>
+<table class="u-full-width" id="summaryDetails">
+  <thead>
+    <tr>
+      <th>Price</th>
+      <th>Open</th>
+      <th>Previous Close</th>
+      <th>Day Low</th>
+      <th>Day High</th>
+
+      <th>52 Week Low</th>
+      <th>52 Week High</th>
+      <th>Volume</th>
+      {{#if marketCap}}
+        <th>Market Cap</th>
+      {{/if}}
+      {{#if totalAssets}}
+        <th>Total Assets</th>
+      {{/if}}
+
+      {{#if marketCap}} 
+        <th>Trailing P/E</th>
+        <th>Forward P/E</th>
+        <th>Beta</th>
+      {{/if}}
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td>{{regularMarketPrice}}</td>
+    <td>{{open}}</td>
+    <td>{{previousClose}}</td>
+    <td>{{dayLow}}</td>
+    <td>{{dayHigh}}</td>
+
+    <td>{{fiftyTwoWeekLow}}</td>
+    <td>{{fiftyTwoWeekHigh}}</td>
+    <td>{{volume}}</td>
+    {{#if marketCap}}
+    <td>{{marketCap}}</td>
+    {{/if}}
+    {{#if totalAssets}}
+    <td>{{totalAssets}}</td>
+    {{/if}}
+    {{#if marketCap}}
+      <td>{{trailingPE}}</td>
+      <td>{{forwardPE}}</td>
+      <td>{{beta}}</td>
+    {{/if}}
+    </tr>
+  </tbody>
+</table>
+{{#if marketCap}}
+  <table class="u-full-width" id="analysis">
+    <thead>
+      <tr>
+        <th>Recommendation</th>
+        <th>No. Analyst Opinions</th>
+        <th>Target Low Price</th>
+        <th>Target Mean Price</th>
+        <th>Target High Price</th>
+        <th>Target Median Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{recommendationKey}}</td>
+        <td>{{numberOfAnalystOpinions}}</td>
+        <td>{{targetLowPrice}}</td>
+        <td>{{targetMeanPrice}}</td>
+        <td>{{targetHighPrice}}</td>
+        <td>{{targetMedianPrice}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="u-full-width" id="balanceSheet">
+    <thead>
+      <tr>
+        <th>Total Cash</th>
+        <th>Total Cash Per Share</th>
+        <th>Total Debt</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{totalCash}}</td>
+        <td>{{totalCashPerShare}}</td>
+        <td>{{totalDebt}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="u-full-width" id="income">
+    <thead>
+      <tr>
+        <th>EBITDA</th>
+        <th>Total Revenue</th>
+        <th>Gross Profits</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ebitda}}</td>
+        <td>{{totalRevenue}}</td>
+        <td>{{grossProfits}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="u-full-width" id="cashflow">
+    <thead>
+      <tr>
+        <th>Free Cashflow</th>
+        <th>Operating Cashflow</th>
+        <th>Earnings Growth</th>
+        <th>Revenue Growth</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{freeCashflow}}</td>
+        <td>{{operatingCashflow}}</td>
+        <td>{{earningsGrowth}}</td>
+        <td>{{revenueGrowth}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="u-full-width" id="margins">
+    <thead>
+      <tr>
+        <th>Gross Margins</th>
+        <th>EBITDA Margins</th>
+        <th>Operating Margins</th>
+        <th>Profit Margins</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{grossMargins}}</td>
+        <td>{{ebitdaMargins}}</td>
+        <td>{{operatingMargins}}</td>
+        <td>{{profitMargins}}</td>
+      </tr>
+    </tbody>
+  </table>
+{{/if}}
+{{/each}}
